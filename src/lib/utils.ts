@@ -21,3 +21,12 @@ export function formatFullDate(date: string | Date): string {
     year: "numeric",
   });
 }
+
+export function getInitials(name: string): string {
+  return name
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+}

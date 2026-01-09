@@ -54,5 +54,3 @@ export function StatsCard({
     </Card>
   );
 }
-
-export { StatsCard };

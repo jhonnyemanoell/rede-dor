@@ -1,15 +1,17 @@
-"use client";
-
-import { use } from "react";
 import { UnderConstruction } from "@/components/shared/UnderConstruction";
+import { UNIDADES_MOCK } from "@/constants";
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export default function CalendarioPage({ params }: PageProps) {
-  const { id } = use(params);
+export function generateStaticParams() {
+  return UNIDADES_MOCK.map((unidade) => ({
+    id: unidade.id,
+  }));
+}
 
+export default async function CalendarioPage({ params }: PageProps) {
   return (
     <UnderConstruction
       title="Calendário"
