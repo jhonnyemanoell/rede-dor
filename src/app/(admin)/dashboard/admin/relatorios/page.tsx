@@ -15,6 +15,7 @@ import {
   BarChart3,
 } from "lucide-react";
 import { Button } from "@/components/shared/ui/button";
+import { cn } from "@/lib/utils"; // Importante para juntar as classes
 
 const relatorios = [
   {
@@ -42,17 +43,17 @@ const relatorios = [
 
 export default function RelatoriosPage() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 animate-in fade-in duration-500">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+          <h1 className="text-3xl font-bold tracking-tight text-[#004186]">
             Relatórios
           </h1>
           <p className="text-muted-foreground mt-1">
             Análises e métricas sobre os planos de ação
           </p>
         </div>
-        <Button>
+        <Button className="bg-[#004186] hover:bg-[#00356b]">
           <Download className="mr-2 h-4 w-4" />
           Exportar Todos
         </Button>
@@ -64,16 +65,17 @@ export default function RelatoriosPage() {
           return (
             <Card
               key={relatorio.id}
-              className="hover:shadow-md transition-shadow"
+              className="group cursor-pointer transition-all duration-300 hover:border-[#004186] hover:shadow-lg hover:-translate-y-1"
             >
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center">
-                      <Icon className="h-5 w-5 text-blue-700" />
+                    {/* O Ícone muda de cor no hover do card */}
+                    <div className="h-10 w-10 rounded-lg bg-blue-50 flex items-center justify-center group-hover:bg-[#004186] transition-colors duration-300">
+                      <Icon className="h-5 w-5 text-[#004186] group-hover:text-white transition-colors duration-300" />
                     </div>
                     <div>
-                      <CardTitle className="text-base">
+                      <CardTitle className="text-base group-hover:text-[#004186] transition-colors">
                         {relatorio.titulo}
                       </CardTitle>
                     </div>
@@ -89,7 +91,7 @@ export default function RelatoriosPage() {
                     <Calendar className="h-4 w-4" />
                     <span>{relatorio.periodo}</span>
                   </div>
-                  <Button variant="ghost" size="sm">
+                  <Button variant="ghost" size="sm" className="text-slate-400 group-hover:text-[#004186]">
                     <Download className="h-4 w-4" />
                   </Button>
                 </div>
@@ -99,7 +101,8 @@ export default function RelatoriosPage() {
         })}
       </div>
 
-      <Card>
+      {/* Card de "Gerar Novo" também ganha a borda, mas sutil */}
+      <Card className="border-dashed transition-all duration-300 hover:border-[#004186] hover:bg-slate-50/50">
         <CardHeader>
           <CardTitle>Gerar Novo Relatório</CardTitle>
           <CardDescription>

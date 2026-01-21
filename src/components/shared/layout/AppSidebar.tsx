@@ -13,9 +13,10 @@ import {
   Settings,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image"; // <--- Importante para a logo nova
 import { usePathname, useParams } from "next/navigation";
-import { RedeDorLogo } from "@/components/shared/brand/RedeDorLogo";
 
+// Interface dos itens
 interface MenuItem {
   icon: React.ElementType;
   label: string;
@@ -23,6 +24,7 @@ interface MenuItem {
   children?: { label: string; href: string }[];
 }
 
+// Configuração do Menu
 const getMenuItems = (
   unidadeId?: string
 ): { section: string; items: MenuItem[] }[] => [
@@ -95,6 +97,8 @@ export function Sidebar() {
   const params = useParams();
   const unidadeId = params?.id as string | undefined;
   const menuSections = getMenuItems(unidadeId);
+  
+  // Estado para menus expansíveis (ex: Planos de Ação)
   const [expandedMenus, setExpandedMenus] = useState<string[]>([
     "Planos de Ação",
   ]);
@@ -108,27 +112,39 @@ export function Sidebar() {
   };
 
   const isActive = (href: string) => pathname === href;
+  
+  // Verifica se algum filho está ativo para manter o pai azul/branco
   const isChildActive = (children?: { label: string; href: string }[]) =>
     children?.some((child) => pathname === child.href);
 
   return (
-    <div className="flex h-screen w-64 flex-col justify-between border-r bg-white">
-      {/* Logo */}
+    <div className="flex h-screen w-64 flex-col justify-between border-r border-[#00356b] bg-[#004186] text-white">
+      
+      {/* 1. Logo Branca */}
       <div className="flex-1 overflow-y-auto">
-        <div className="flex items-center justify-center py-6 border-b">
-          <RedeDorLogo className="text-[#004186]" />
+        <div className="flex items-center justify-center py-6 border-b border-white/10">
+           <div className="relative w-32 h-10">
+             {/* Certifique-se que o arquivo logo-white.png está na pasta public */}
+             <Image 
+               src="/logo-white.png" 
+               alt="Rede D'Or" 
+               fill
+               className="object-contain"
+               priority
+             />
+           </div>
         </div>
 
         {/* Menu Sections */}
         <div className="py-4">
           {menuSections.map((section) => (
             <div key={section.section} className="mb-4">
-              {/* Section Title */}
-              <h3 className="px-4 mb-2 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+              {/* Título da Seção (ex: PLATAFORMA) */}
+              <h3 className="px-4 mb-2 text-xs font-bold text-blue-200 uppercase tracking-wider opacity-80">
                 {section.section}
               </h3>
 
-              {/* Menu Items */}
+              {/* Itens do Menu */}
               <nav className="space-y-1 px-2">
                 {section.items.map((item) => {
                   const hasChildren = item.children && item.children.length > 0;
@@ -139,15 +155,15 @@ export function Sidebar() {
 
                   return (
                     <div key={item.label}>
-                      {/* Parent Item */}
+                      {/* Item Pai (Botão ou Link) */}
                       {hasChildren ? (
                         <button
                           onClick={() => toggleMenu(item.label)}
                           className={cn(
                             "w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
                             isItemActive
-                              ? "bg-blue-50 text-[#004186]"
-                              : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                              ? "bg-white text-[#004186] shadow-sm" // Ativo: Branco
+                              : "text-blue-100 hover:bg-white/10 hover:text-white" // Inativo: Azul Claro
                           )}
                         >
                           <div className="flex items-center gap-3">
@@ -157,7 +173,7 @@ export function Sidebar() {
                           <ChevronDown
                             size={16}
                             className={cn(
-                              "transition-transform duration-200",
+                              "transition-transform duration-200 opacity-70",
                               isExpanded && "rotate-180"
                             )}
                           />
@@ -168,8 +184,8 @@ export function Sidebar() {
                             className={cn(
                               "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
                               isItemActive
-                                ? "bg-[#004186] text-white shadow-md shadow-blue-200"
-                                : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                                ? "bg-white text-[#004186] shadow-sm"
+                                : "text-blue-100 hover:bg-white/10 hover:text-white"
                             )}
                           >
                             <item.icon size={20} />
@@ -178,17 +194,17 @@ export function Sidebar() {
                         </Link>
                       )}
 
-                      {/* Children */}
+                      {/* Sub-itens (Children) */}
                       {hasChildren && isExpanded && (
-                        <div className="ml-6 mt-1 space-y-1 border-l-2 border-slate-100 pl-4">
+                        <div className="ml-6 mt-1 space-y-1 border-l border-white/20 pl-4">
                           {item.children?.map((child) => (
                             <Link key={child.href} href={child.href}>
                               <div
                                 className={cn(
-                                  "py-2 px-3 text-sm rounded-lg transition-all duration-200",
+                                  "py-2 px-3 text-sm rounded-lg transition-all duration-200 block",
                                   isActive(child.href)
-                                    ? "text-[#004186] font-medium bg-blue-50"
-                                    : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+                                    ? "text-white font-semibold bg-white/10" // Sub-item Ativo
+                                    : "text-blue-200 hover:text-white hover:bg-white/5" // Sub-item Inativo
                                 )}
                               >
                                 {child.label}
@@ -207,15 +223,15 @@ export function Sidebar() {
       </div>
 
       {/* Footer - Sair */}
-      <div className="border-t p-3">
+      <div className="border-t border-white/10 p-3">
         <Button
-          variant="ghost"
-          className="w-full justify-start gap-3 text-slate-500 hover:bg-red-50 hover:text-red-600"
+          className="w-full justify-start gap-3 bg-transparent text-blue-200 hover:bg-white/5 hover:text-white transition-all duration-200 border-0 shadow-none"
           onClick={() => {
             window.location.href = "/login";
           }}
         >
-          <LogOut size={20} /> Sair
+          <LogOut size={20} />
+          Sair
         </Button>
       </div>
     </div>

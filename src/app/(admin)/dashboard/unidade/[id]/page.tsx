@@ -1,5 +1,5 @@
 import { UNIDADES_MOCK } from "@/constants";
-import { UnidadeDashboardClient } from "./UnidadeDashboardClient";
+import { UnidadeDashboardClient } from "./UnidadeDashboardClient"; // <--- Import local (mesma pasta)
 import { notFound } from "next/navigation";
 
 interface PageProps {

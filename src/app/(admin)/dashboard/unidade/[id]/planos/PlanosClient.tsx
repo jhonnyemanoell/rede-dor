@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import { PlanCard } from "@/components/features/dashboard/PlanCard";
 import { CreatePlanDialog } from "@/components/features/plans/CreatePlanDialog";
 import { Button } from "@/components/shared/ui/button";
@@ -12,12 +12,22 @@ interface PlanosClientProps {
   unidadeId: string;
 }
 
-// Dados mock para os planos
+// Dados mock para os planos (ATUALIZADO COM OS NOVOS CAMPOS)
 const PLANOS_MOCK: PlanoAcao[] = [
   {
     id: "1",
     titulo: "Adequação Escala UTI",
     descricao: "Cobrir lacuna do plantão noturno detectada na auditoria.",
+    // NOVOS DADOS PARA O MODAL:
+    descricaoCompleta: "Durante a auditoria interna realizada em 10/12, foi identificada uma lacuna recorrente na escala de enfermagem do turno noturno na UTI Adulto II. O não cumprimento do dimensionamento mínimo (RDC 7) expõe a unidade a riscos assistenciais e passivos trabalhistas.\n\nEste plano visa reestruturar a escala, avaliar a necessidade de contratação imediata ou remanejamento de colaboradores de setores de menor complexidade, garantindo a cobertura total dos plantões de fim de semana.",
+    etapas: [
+      { id: "1", label: "Levantamento de absenteísmo e horas extras", checked: true },
+      { id: "2", label: "Reunião com coordenação de enfermagem", checked: true },
+      { id: "3", label: "Solicitação de vaga ao RH", checked: false },
+      { id: "4", label: "Treinamento admissional dos novos técnicos", checked: false },
+    ],
+    observacoes: "O RH informou que o processo seletivo começa na segunda-feira. A diretoria já aprovou a verba.",
+    // -------------------------
     unidadeId: "quinta-dor",
     responsavel: "Maria Santos",
     dataInicio: new Date("2026-01-01"),
@@ -34,6 +44,13 @@ const PLANOS_MOCK: PlanoAcao[] = [
     id: "2",
     titulo: "Troca Filtros AC",
     descricao: "Manutenção preventiva setor B conforme norma técnica.",
+    descricaoCompleta: "Manutenção preventiva trimestral dos filtros de ar condicionado do Bloco B (Internação). A troca é necessária para manter a qualidade do ar interior e atender às normas da ANVISA.",
+    etapas: [
+      { id: "1", label: "Compra dos filtros HEPA", checked: false },
+      { id: "2", label: "Agendamento com a engenharia clínica", checked: false },
+      { id: "3", label: "Execução da troca", checked: false },
+    ],
+    observacoes: "",
     unidadeId: "quinta-dor",
     responsavel: "João Torres",
     dataInicio: new Date("2026-01-05"),
@@ -50,6 +67,14 @@ const PLANOS_MOCK: PlanoAcao[] = [
     id: "3",
     titulo: "Reunião de Feedback",
     descricao: "Alinhar processos com equipe de enfermagem do 3º turno.",
+    descricaoCompleta: "Reunião mensal obrigatória para alinhamento de condutas e feedback sobre os indicadores de segurança do paciente.",
+    etapas: [
+      { id: "1", label: "Agendamento da sala", checked: true },
+      { id: "2", label: "Preparação da pauta", checked: true },
+      { id: "3", label: "Realização da reunião", checked: true },
+      { id: "4", label: "Envio da ata", checked: true },
+    ],
+    observacoes: "Reunião realizada com sucesso. Ata assinada por todos os presentes.",
     unidadeId: "quinta-dor",
     responsavel: "Ana Rodrigues",
     dataInicio: new Date("2026-01-01"),
@@ -161,8 +186,7 @@ const PLANOS_MOCK: PlanoAcao[] = [
   {
     id: "10",
     titulo: "Capacitação Recepção",
-    descricao:
-      "Treinamento de atendimento humanizado para novos colaboradores.",
+    descricao: "Treinamento de atendimento humanizado para novos colaboradores.",
     unidadeId: "quinta-dor",
     responsavel: "Bruno Nascimento",
     dataInicio: new Date("2026-01-15"),
@@ -206,7 +230,7 @@ const PLANOS_MOCK: PlanoAcao[] = [
     categoria: "Recursos Humanos",
     createdAt: new Date(),
     updatedAt: new Date(),
-  },
+  }
 ];
 
 type Prioridade = "alta" | "media" | "baixa" | "critica" | null;

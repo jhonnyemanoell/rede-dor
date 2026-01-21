@@ -26,6 +26,12 @@ export interface Unidade {
   updatedAt: Date;
 }
 
+export interface Etapa {
+  id: string;
+  label: string;
+  checked: boolean;
+}
+
 export interface PlanoAcao {
   id: string;
   titulo: string;
@@ -47,9 +53,13 @@ export interface PlanoAcao {
   progresso: number; // 0-100
   categoria: string;
   tags?: string[];
-  observacoes?: string;
   createdAt: Date;
   updatedAt: Date;
+  
+  // NOVOS CAMPOS PARA O MODAL DETALHADO:
+  descricaoCompleta?: string; // Texto longo para contexto
+  etapas?: Etapa[];           // O Checklist
+  observacoes?: string;       // Diário de bordo
 }
 
 export interface DashboardStats {
@@ -73,10 +83,12 @@ export interface LoginFormData {
 
 export type UserRole = "admin" | "unidade";
 
-export interface NavItem {
+import { LucideIcon } from "lucide-react";
+
+export interface NavItem { // (Ou o nome da sua interface)
   title: string;
   href: string;
-  icon?: any;
+  icon?: LucideIcon; // 2. Troque 'any' por 'LucideIcon'
   badge?: string | number;
   children?: NavItem[];
 }

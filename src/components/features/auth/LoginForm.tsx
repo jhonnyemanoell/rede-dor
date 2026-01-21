@@ -30,7 +30,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/shared/ui/form";
-import { Separator } from "@/components/shared/ui/separator";
 import { UNIDADES_MOCK } from "@/constants";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -95,14 +94,14 @@ export function LoginForm() {
         <TabsList className="grid w-full grid-cols-2 mb-6 h-14 bg-white border border-gray-200 p-1 rounded-lg">
           <TabsTrigger
             value="unidade"
-            className="data-[state=active]:bg-[#004186] data-[state=active]:text-white text-gray-600 font-medium rounded-md transition-all h-full text-base"
+            className="data-[state=active]:bg-[#004186] data-[state=active]:text-white text-gray-600 font-medium rounded-md transition-all h-full text-base hover:text-[#004186]"
           >
             <Building2 className="mr-2 h-5 w-5" />
             Unidade
           </TabsTrigger>
           <TabsTrigger
             value="admin"
-            className="data-[state=active]:bg-[#004186] data-[state=active]:text-white text-gray-600 font-medium rounded-md transition-all h-full text-base"
+            className="data-[state=active]:bg-[#004186] data-[state=active]:text-white text-gray-600 font-medium rounded-md transition-all h-full text-base hover:text-[#004186]"
           >
             <UserCog className="mr-2 h-5 w-5" />
             Gestão RH
@@ -120,7 +119,7 @@ export function LoginForm() {
                 name="unidade"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium text-gray-700">
+                    <FormLabel className="text-sm font-medium text-[#004186]">
                       Unidade Hospitalar
                     </FormLabel>
                     <Select
@@ -128,7 +127,7 @@ export function LoginForm() {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="h-12 border-gray-300 bg-white">
+                        <SelectTrigger className="h-12 border-gray-300 bg-white focus:ring-2 focus:ring-[#004186] focus:border-transparent transition-all">
                           <SelectValue placeholder="Selecione a unidade..." />
                         </SelectTrigger>
                       </FormControl>
@@ -150,14 +149,14 @@ export function LoginForm() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium text-gray-700">
+                    <FormLabel className="text-sm font-medium text-[#004186]">
                       Senha de Acesso
                     </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
                         placeholder="••••••"
-                        className="h-12 border-gray-300 bg-white"
+                        className="h-12 border-gray-300 bg-white focus-visible:ring-[#004186]"
                         {...field}
                       />
                     </FormControl>
@@ -168,7 +167,8 @@ export function LoginForm() {
 
               <Button
                 type="submit"
-                className="w-full h-12 text-base font-semibold bg-[#F59E0B] hover:bg-[#D97706] text-white rounded-lg mt-6"
+                // BOTÃO AGORA AZUL
+                className="w-full h-12 text-base font-semibold bg-[#004186] hover:bg-[#00356b] text-white rounded-lg mt-6 shadow-md transition-all hover:scale-[1.01]"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -184,7 +184,7 @@ export function LoginForm() {
                 <p className="text-sm text-gray-500 mb-2">Não tem acesso?</p>
                 <a
                   href="#"
-                  className="text-[#004186] text-sm hover:underline inline-flex items-center gap-1"
+                  className="text-[#004186] text-sm hover:underline inline-flex items-center gap-1 font-medium"
                 >
                   <FileText className="h-4 w-4" />
                   Solicite acesso ao suporte TI
@@ -205,13 +205,13 @@ export function LoginForm() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium text-gray-700">
+                    <FormLabel className="text-sm font-medium text-[#004186]">
                       E-mail Corporativo
                     </FormLabel>
                     <FormControl>
                       <Input
                         placeholder="gestor@rededor.com.br"
-                        className="h-12 border-gray-300 bg-white"
+                        className="h-12 border-gray-300 bg-white focus-visible:ring-[#004186]"
                         {...field}
                       />
                     </FormControl>
@@ -225,14 +225,14 @@ export function LoginForm() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm font-medium text-gray-700">
+                    <FormLabel className="text-sm font-medium text-[#004186]">
                       Senha
                     </FormLabel>
                     <FormControl>
                       <Input
                         type="password"
                         placeholder="••••••"
-                        className="h-12 border-gray-300 bg-white"
+                        className="h-12 border-gray-300 bg-white focus-visible:ring-[#004186]"
                         {...field}
                       />
                     </FormControl>
@@ -243,7 +243,8 @@ export function LoginForm() {
 
               <Button
                 type="submit"
-                className="w-full h-12 text-base font-semibold bg-[#F59E0B] hover:bg-[#D97706] text-white rounded-lg mt-6"
+                // BOTÃO AGORA AZUL
+                className="w-full h-12 text-base font-semibold bg-[#004186] hover:bg-[#00356b] text-white rounded-lg mt-6 shadow-md transition-all hover:scale-[1.01]"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -260,7 +261,7 @@ export function LoginForm() {
                 <p className="text-sm text-gray-500 mb-2">Não tem acesso?</p>
                 <a
                   href="#"
-                  className="text-[#004186] text-sm hover:underline inline-flex items-center gap-1"
+                  className="text-[#004186] text-sm hover:underline inline-flex items-center gap-1 font-medium"
                 >
                   <FileText className="h-4 w-4" />
                   Solicite acesso ao suporte TI

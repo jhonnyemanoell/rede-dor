@@ -1,47 +1,37 @@
 "use client";
 
+import { useState } from "react";
 import {
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
 } from "@/components/shared/ui/card";
 import { Badge } from "@/components/shared/ui/badge";
-import { Progress } from "@/components/shared/ui/progress";
 import type { PlanoAcao } from "@/types";
-import { STATUS_PLANO, PRIORIDADE_PLANO, DIMENSAO_PLANO } from "@/constants";
+import { DIMENSAO_PLANO, PRIORIDADE_PLANO } from "@/constants";
 import { formatDate } from "@/lib/utils";
-import { Clock, MoreHorizontal } from "lucide-react";
+import { Clock, Star } from "lucide-react"; // Import da Star
 import { cn } from "@/lib/utils";
+import { PlanDetailsDialog } from "@/components/features/plans/PlanDetailsDialog";
 
 interface PlanCardProps {
   plano: PlanoAcao;
-  onClick?: () => void;
 }
 
-export function PlanCard({ plano, onClick }: PlanCardProps) {
-  const statusConfig = STATUS_PLANO[plano.status];
-  const prioridadeConfig = PRIORIDADE_PLANO[plano.prioridade];
-  const dimensaoConfig = DIMENSAO_PLANO[plano.dimensao];
+export function PlanCard({ plano }: PlanCardProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Cor do indicador de prioridade
+  // Configurações visuais
+  const dimensaoConfig = DIMENSAO_PLANO[plano.dimensao];
+  const prioridadeConfig = PRIORIDADE_PLANO[plano.prioridade];
+
+  // Cores da bolinha de Prioridade
   const prioridadeColors = {
     baixa: "bg-green-500",
-    media: "bg-yellow-500",
-    alta: "bg-red-500",
-    critica: "bg-red-600",
+    media: "bg-yellow-400",
+    alta: "bg-orange-500",
+    critica: "bg-red-500",
   };
 
-  // Cor da barra de progresso baseada no status
-  const progressColors = {
-    pendente: "bg-yellow-500",
-    em_andamento: "bg-blue-500",
-    concluido: "bg-green-500",
-    atrasado: "bg-red-500",
-    cancelado: "bg-gray-400",
-  };
-
-  // Obtém as iniciais do responsável
   const getInitials = (name: string) => {
     return name
       .split(" ")
@@ -51,117 +41,107 @@ export function PlanCard({ plano, onClick }: PlanCardProps) {
       .slice(0, 2);
   };
 
+  const isLate = plano.status === "atrasado" || (new Date() > new Date(plano.dataFim) && plano.progresso < 100);
+
   return (
-    <Card
-      className="hover:shadow-lg transition-all duration-200 cursor-pointer border-l-4 group relative"
-      style={{ borderLeftColor: statusConfig.color === "blue" ? "#3b82f6" : 
-               statusConfig.color === "green" ? "#22c55e" : 
-               statusConfig.color === "red" ? "#ef4444" : 
-               statusConfig.color === "yellow" ? "#eab308" : "#9ca3af" }}
-      onClick={onClick}
-    >
-      <CardHeader className="pb-2">
-        <div className="flex items-start justify-between">
-          <Badge 
-            variant="outline" 
-            className={cn(
-              "text-xs font-medium",
-              statusConfig.color === "blue" && "bg-blue-50 text-blue-700 border-blue-200",
-              statusConfig.color === "green" && "bg-green-50 text-green-700 border-green-200",
-              statusConfig.color === "red" && "bg-red-50 text-red-700 border-red-200",
-              statusConfig.color === "yellow" && "bg-yellow-50 text-yellow-700 border-yellow-200",
-              statusConfig.color === "gray" && "bg-gray-50 text-gray-700 border-gray-200"
-            )}
-          >
-            {statusConfig.label}
-          </Badge>
+    <>
+      <Card
+        onClick={() => setIsModalOpen(true)}
+        className="group relative cursor-pointer border-0 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 bg-white rounded-xl overflow-hidden"
+      >
+        <CardContent className="p-6 flex flex-col h-full gap-4">
           
-          <div className="flex items-center gap-2">
-            {/* Indicador de prioridade */}
-            <div 
-              className={cn(
-                "w-3 h-3 rounded-full",
-                prioridadeColors[plano.prioridade]
-              )} 
-              title={`Prioridade: ${prioridadeConfig.label}`}
-            />
-          </div>
-        </div>
-
-        {/* Avatar do responsável */}
-        <div className="flex justify-end mt-2">
-          <div 
-            className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-semibold text-slate-600"
-            title={plano.responsavel}
-          >
-            {getInitials(plano.responsavel)}
-          </div>
-        </div>
-      </CardHeader>
-      
-      <CardContent className="space-y-3">
-        <div>
-          <CardTitle className="text-base font-semibold text-slate-800 line-clamp-1">
-            {plano.titulo}
-          </CardTitle>
-          <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
-            {plano.descricao}
-          </p>
-        </div>
-
-        {/* Badge de Dimensão */}
-        <Badge 
-          variant="outline" 
-          className={cn("text-xs", dimensaoConfig?.color)}
-        >
-          {dimensaoConfig?.label || "Sem dimensão"}
-        </Badge>
-
-        {/* Progresso */}
-        <div className="space-y-1">
-          <div className="flex items-center justify-between text-xs">
-            <span className={cn(
-              "font-medium uppercase tracking-wide",
-              plano.status === "atrasado" && "text-red-600"
+          {/* TOPO: Data (Esq) vs Prioridade + Star (Dir) */}
+          <div className="flex justify-between items-start">
+            
+            {/* Data */}
+            <div className={cn(
+              "flex items-center gap-1.5 text-sm font-medium transition-colors",
+              isLate ? "text-red-500" : "text-slate-400 group-hover:text-slate-600"
             )}>
-              Conclusão
-            </span>
-            <span className={cn(
-              "font-bold",
-              plano.status === "atrasado" && "text-red-600"
-            )}>
-              {plano.progresso}%
-            </span>
+              <Clock size={16} />
+              <span>{formatDate(plano.dataFim)}</span>
+            </div>
+
+            {/* Coluna da Direita: Bolinha + Estrela */}
+            <div className="flex flex-col items-end gap-3">
+               {/* Bolinha de Prioridade */}
+               <div className="relative">
+                  <div className={cn(
+                    "w-4 h-4 rounded-full shadow-sm",
+                    prioridadeColors[plano.prioridade]
+                  )} title={`Prioridade: ${prioridadeConfig.label}`} />
+                  
+                  {plano.prioridade === 'critica' && (
+                    <span className="absolute top-0 right-0 w-4 h-4 rounded-full bg-red-500 animate-ping opacity-75" />
+                  )}
+               </div>
+
+               {/* Ícone de Favoritar (Star) */}
+               <button 
+                 onClick={(e) => {
+                   e.stopPropagation(); // Evita abrir o modal ao clicar na estrela
+                   // Lógica de favoritar viria aqui
+                 }}
+                 className="text-slate-300 hover:text-yellow-400 transition-colors hover:scale-110 active:scale-95"
+               >
+                 <Star size={18} />
+               </button>
+            </div>
           </div>
-          <div className="w-full bg-slate-100 rounded-full h-1.5">
-            <div
+
+          {/* MEIO: Título e Descrição */}
+          <div className="space-y-2 mt-[-10px]"> {/* Margem negativa para compensar o espaço da estrela */}
+            <h3 className="text-lg font-bold text-slate-900 leading-tight group-hover:text-[#004186] transition-colors pr-8">
+              {plano.titulo}
+            </h3>
+            <p className="text-sm text-slate-500 line-clamp-2 leading-relaxed">
+              {plano.descricao}
+            </p>
+          </div>
+
+          {/* TAG: Dimensão */}
+          <div>
+            <Badge 
+              variant="secondary" 
               className={cn(
-                "h-1.5 rounded-full transition-all",
-                progressColors[plano.status]
+                "rounded-full px-3 py-0.5 text-xs font-medium border-0 transition-colors",
+                dimensaoConfig?.color || "bg-slate-100 text-slate-600"
               )}
-              style={{ width: `${plano.progresso}%` }}
-            />
+            >
+              {dimensaoConfig?.label || "Geral"}
+            </Badge>
           </div>
-        </div>
 
-        {/* Footer */}
-        <div className="flex items-center justify-between pt-2 border-t">
-          <div className="flex items-center gap-1 text-muted-foreground">
-            <Clock size={14} />
-            <span className="text-xs">{formatDate(plano.dataFim)}</span>
+          {/* RODAPÉ: Responsável e Barra */}
+          <div className="mt-auto pt-2 flex items-center gap-3">
+            <div className="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center text-xs font-bold text-slate-500 shrink-0 border border-transparent group-hover:border-slate-200 transition-colors">
+              {getInitials(plano.responsavel)}
+            </div>
+
+            <div className="flex-1 flex flex-col gap-1">
+              <div className="flex justify-end">
+                <span className="text-xs font-bold text-slate-400 group-hover:text-[#004186] transition-colors">
+                  {plano.progresso}%
+                </span>
+              </div>
+              <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-[#004186] rounded-full transition-all duration-500 ease-out"
+                  style={{ width: `${plano.progresso}%` }}
+                />
+              </div>
+            </div>
           </div>
-          <button 
-            className="p-1 hover:bg-slate-100 rounded opacity-0 group-hover:opacity-100 transition-opacity"
-            onClick={(e) => {
-              e.stopPropagation();
-              // TODO: Abrir menu de ações
-            }}
-          >
-            <MoreHorizontal size={16} className="text-slate-400" />
-          </button>
-        </div>
-      </CardContent>
-    </Card>
+
+        </CardContent>
+      </Card>
+
+      <PlanDetailsDialog 
+        plano={plano} 
+        open={isModalOpen} 
+        onOpenChange={setIsModalOpen} 
+      />
+    </>
   );
 }
-
