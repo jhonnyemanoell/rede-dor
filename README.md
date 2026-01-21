@@ -1,160 +1,177 @@
-# Rede D'Or - Sistema de Gestão de Planos de Ação
+Rede D'Or
+Sistema de Gestão de Planos de Ação
 
-Sistema web para acompanhamento e gestão de planos de ação das unidades hospitalares da Rede D'Or.
+Plataforma web desenvolvida para acompanhamento, padronização e gestão estratégica de planos de ação das unidades hospitalares da Rede D'Or, com foco em eficiência operacional, governança e inteligência organizacional.
 
-## 🏗️ Arquitetura do Projeto
+🔗 Deploy (Versão Atual):
+https://jhonnyemanoell.github.io/rede-dor
 
-O projeto segue uma arquitetura limpa e organizada, com separação clara de responsabilidades:
+🎯 Objetivo do Sistema
 
-```
+Centralizar a gestão de planos de ação da rede hospitalar, permitindo:
+
+Padronização de processos operacionais
+
+Monitoramento de indicadores
+
+Acompanhamento de prazos e metas
+
+Visão estratégica da operação
+
+Suporte à tomada de decisão gerencial
+
+🏗️ Arquitetura do Projeto
+
+O sistema segue princípios modernos de engenharia de software, com arquitetura modular, escalável e orientada a domínio:
+
 src/
-├── app/                          # Next.js App Router
-│   ├── (auth)/                   # Grupo de rotas de autenticação
-│   │   └── login/               
-│   ├── (admin)/                  # Grupo de rotas administrativas
-│   │   ├── layout.tsx           # Layout com sidebar e header
-│   │   └── dashboard/
-│   │       ├── admin/           # Dashboard administrativo
-│   │       │   ├── page.tsx     # Visão geral da rede
-│   │       │   ├── unidades/    # Gestão de unidades
-│   │       │   ├── relatorios/  # Relatórios e métricas
-│   │       │   ├── usuarios/    # Gestão de usuários
-│   │       │   └── configuracoes/ # Configurações do sistema
-│   │       └── unidade/
-│   │           └── [id]/        # Dashboard específico da unidade
-│   ├── globals.css
-│   ├── layout.tsx
-│   └── page.tsx
-│
-├── components/
-│   ├── features/                # Componentes específicos por funcionalidade
-│   │   ├── auth/
-│   │   │   └── LoginForm.tsx    # Formulário de login
-│   │   ├── plans/
-│   │   │   ├── NewPlanForm.tsx  # Formulário de novo plano
-│   │   │   └── CreatePlanDialog.tsx # Dialog para criar plano
-│   │   └── dashboard/
-│   │       ├── StatsCard.tsx    # Card de estatísticas
-│   │       └── PlanCard.tsx     # Card de plano de ação
-│   │
-│   └── shared/                  # Componentes compartilhados
-│       ├── ui/                  # Componentes UI (shadcn/ui)
-│       │   ├── button.tsx
-│       │   ├── card.tsx
-│       │   ├── dialog.tsx
-│       │   ├── form.tsx
-│       │   └── ...
-│       └── layout/              # Componentes de layout
-│           ├── AppSidebar.tsx   # Sidebar de navegação
-│           └── Header.tsx       # Header da aplicação
-│
-├── lib/
-│   └── utils.ts                 # Funções utilitárias
-│
-├── types/
-│   └── index.ts                 # Definições de tipos TypeScript
-│
-├── constants/
-│   └── index.ts                 # Constantes da aplicação
-│
-├── services/
-│   └── api.ts                   # Serviços de API
-│
-└── hooks/
-    └── useAuth.ts               # Hook de autenticação
-```
+├── app/                  # Next.js App Router
+│   ├── (auth)/           # Rotas de autenticação
+│   ├── (admin)/          # Rotas administrativas
+│   │   └── dashboard/    # Dashboards (Admin e Unidade)
+│   └── page.tsx          # Redirecionamento inteligente
+├── assets/               # Assets visuais (importação direta)
+├── components/           # Componentes React reutilizáveis
+├── lib/                  # Utilitários e helpers
+├── types/                # Tipagens TypeScript
+└── hooks/                # Custom Hooks
 
-## 🎯 Design Patterns Aplicados
+🎯 Padrões de Arquitetura e Design
+1. Feature-Based Organization
 
-### 1. **Feature-Based Organization**
-Componentes organizados por funcionalidade (auth, plans, dashboard) para melhor manutenibilidade.
+Organização por domínio funcional (auth, plans, dashboard), favorecendo:
 
-### 2. **Separation of Concerns**
-- **Apresentação**: Componentes UI em `components/`
-- **Lógica de Negócio**: Hooks e services
-- **Tipos**: Definições centralizadas em `types/`
-- **Constantes**: Valores fixos em `constants/`
+Escalabilidade
 
-### 3. **Component Composition**
-Componentes pequenos e reutilizáveis que se compõem para formar features complexas.
+Manutenibilidade
 
-### 4. **Container/Presentational Pattern**
-- Pages (containers): Lógica e estado
-- Components (presentational): Renderização pura
+Baixo acoplamento
 
-## 🚀 Funcionalidades
+Alta coesão
 
-### Autenticação
-- Login para Administradores (Gestão RH)
-- Login para Unidades Hospitalares
+2. Asset Import Strategy
 
-### Dashboard Administrativo
-- ✅ Visão geral da rede
-- ✅ Gestão de unidades
-- ✅ Relatórios e métricas
-- ✅ Gestão de usuários
-- ✅ Configurações do sistema
+Importação direta de imagens e mídias via JavaScript:
 
-### Dashboard da Unidade
-- ✅ Visão geral da unidade
-- ✅ Criação de planos de ação
-- ✅ Acompanhamento de progresso
-- Listagem e filtros de planos
-- Edição de planos existentes
+import hero from '@/assets/login-hero.png'
 
-## 🛠️ Tecnologias
 
-- **Next.js 16** - Framework React com App Router
-- **TypeScript** - Tipagem estática
-- **Tailwind CSS** - Estilização
-- **shadcn/ui** - Componentes UI
-- **React Hook Form** - Gerenciamento de formulários
-- **Zod** - Validação de schemas
-- **Lucide React** - Ícones
+Benefícios:
 
-## 📦 Getting Started
+Otimização automática
 
-First, run the development server:
+Compatibilidade com qualquer ambiente de deploy
 
-```bash
+Versionamento correto
+
+Performance de build
+
+3. Separation of Concerns
+
+UI/Apresentação: components/
+
+Lógica de Negócio: hooks/, lib/
+
+Tipagem: types/
+
+Domínio: organização por feature
+
+🚀 Funcionalidades (MVP)
+🔐 Autenticação
+
+Login corporativo (Gestão RH)
+
+Login por unidade hospitalar
+
+Redirecionamento inteligente (ambiente local vs produção)
+
+📊 Dashboard Administrativo
+
+Visão geral da rede
+
+Indicadores operacionais
+
+Gestão de unidades
+
+Status em tempo real dos planos
+
+Monitoramento de performance
+
+🏥 Operacional (Unidades)
+
+Criação padronizada de planos de ação
+
+Visualização de metas
+
+Gestão de prazos
+
+Acompanhamento de execução
+
+Organização por status (Pendente / Concluído)
+
+🛠️ Stack Tecnológica
+
+Next.js 14+ — Framework React com App Router
+
+TypeScript — Tipagem forte e segurança de código
+
+Tailwind CSS — Estilização performática
+
+shadcn/ui — Componentes acessíveis e padronizados
+
+Lucide React — Ícones vetoriais
+
+React Hook Form + Zod — Formulários com validação robusta
+
+📦 Execução Local
+# Clone do repositório
+git clone https://github.com/jhonnyemanoell/rede-dor.git
+
+# Instalação de dependências
+npm install
+# ou
+pnpm install
+
+# Execução do ambiente de desenvolvimento
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## 🔐 Autenticação (Mock)
+Acesse:
+http://localhost:3000
 
-### Administrador
-- Email: `admin@rededor.com.br`
-- Senha: qualquer
+🔐 Acesso de Demonstração
+Administrador
 
-### Unidade
-- Selecione uma unidade
-- Senha: qualquer
+Email: admin@rededor.com.br
 
-## 📝 Próximos Passos
+Senha: qualquer senha (modo demonstração)
 
-- [ ] Integração com API real
-- [ ] Implementar autenticação JWT
-- [ ] Adicionar gráficos (Recharts)
-- [ ] Implementar CRUD completo de planos
-- [ ] Adicionar filtros e busca
-- [ ] Sistema de notificações
-- [ ] Exportação de relatórios
-- [ ] Testes unitários e E2E
+Unidade
 
-## Learn More
+Selecionar unidade no dropdown
 
-To learn more about Next.js:
+Senha: qualquer senha (modo demonstração)
 
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Learn Next.js](https://nextjs.org/learn)
+🔮 Roadmap Estratégico
 
-## 📄 Licença
+O sistema está em evolução para se tornar uma plataforma completa de inteligência operacional hospitalar:
 
-Propriedade da Rede D'Or São Luiz S.A.
+🔔 Notificações Ativas
+Alertas automáticos (Push / WhatsApp) antes do vencimento de planos.
 
+🤖 IA Preditiva
+Sugestão automática de planos com base em histórico de sucesso.
+
+🛡️ Módulo de Ouvidoria
+Canal seguro, anônimo e estruturado para compliance.
+
+🔐 Cibersegurança
+2FA, criptografia ponta a ponta e hardening da aplicação.
+
+🔗 Integrações
+APIs para conexão com sistemas legados da rede hospitalar.
+
+📄 Licença
+
+Projeto desenvolvido para o Hackathon Rede D'Or São Luiz.
+Todos os direitos reservados.

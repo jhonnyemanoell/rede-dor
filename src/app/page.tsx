@@ -7,12 +7,8 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    // Verifica se é produção
-    const isProduction = process.env.NODE_ENV === "production";
-    // Define o caminho correto
-    const loginPath = isProduction ? "/rede-dor/login" : "/login";
-    
-    router.replace(loginPath);
+    // Simples e direto. O Next.js resolve o caminho base sozinho.
+    router.replace("/login");
   }, [router]);
 
   return (
