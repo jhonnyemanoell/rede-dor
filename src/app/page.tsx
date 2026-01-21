@@ -7,7 +7,12 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace("/login");
+    // Verifica se é produção
+    const isProduction = process.env.NODE_ENV === "production";
+    // Define o caminho correto
+    const loginPath = isProduction ? "/rede-dor/login" : "/login";
+    
+    router.replace(loginPath);
   }, [router]);
 
   return (
