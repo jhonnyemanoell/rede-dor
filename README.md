@@ -3,9 +3,6 @@ Sistema de Gestão de Planos de Ação
 
 Plataforma web desenvolvida para acompanhamento, padronização e gestão estratégica de planos de ação das unidades hospitalares da Rede D'Or, com foco em eficiência operacional, governança e inteligência organizacional.
 
-🔗 Deploy (Versão Atual):
-https://jhonnyemanoell.github.io/rede-dor
-
 🎯 Objetivo do Sistema
 
 Centralizar a gestão de planos de ação da rede hospitalar, permitindo:
